@@ -1,26 +1,24 @@
 <resources>
-    <string name="app_name">Tinkoff</string>
+    <string name="appName">Tinkoff</string>
 
-    <string name="unkonow_error">Ошибка</string>
-    <string name="internet_connection_error">Проверьте подключение к интеренту</string>
-    <string name="server_responding_error">Сервер недоступен</string>
-    <string name="news_not_found_error">Новость не существует</string>
+    <string name="unknowError">Ошибка</string>
+    <string name="internetConnectionError">Проверьте подключение к интеренту</string>
+    <string name="serverRespondingError">Сервер недоступен</string>
 
-    <string name="snackbar_repeat">Повторить</string>
-    <string name="title_list_is_empty">Список новостей пуст</string>
-
-    <string name="m_0">Январь</string>
-    <string name="m_1">Февраль</string>
-    <string name="m_2">Март</string>
-    <string name="m_3">Апрель</string>
-    <string name="m_4">Май</string>
-    <string name="m_5">Июнь</string>
-    <string name="m_6">Июль</string>
-    <string name="m_7">Август</string>
-    <string name="m_8">Сентябрь</string>
-    <string name="m_9">Октябрь</string>
-    <string name="m_10">Ноябрь</string>
-    <string name="m_11">Декабрь</string>
     <string name="repeat">Повторить</string>
+    <string name="titleListIsEmpty">Список новостей пуст</string>
+
+    <string name="m0">Январь</string>
+    <string name="m1">Февраль</string>
+    <string name="m2">Март</string>
+    <string name="m3">Апрель</string>
+    <string name="m4">Май</string>
+    <string name="m5">Июнь</string>
+    <string name="m6">Июль</string>
+    <string name="m7">Август</string>
+    <string name="m8">Сентябрь</string>
+    <string name="m9">Октябрь</string>
+    <string name="m10">Ноябрь</string>
+    <string name="m11">Декабрь</string>
 
 </resources>

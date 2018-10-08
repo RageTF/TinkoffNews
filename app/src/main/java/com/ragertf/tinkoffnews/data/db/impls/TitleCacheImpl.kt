@@ -1,6 +1,6 @@
 package com.ragertf.tinkoffnews.data.db.impls
 
-import com.ragertf.tinkoffnews.data.EmptyCacheException
+import com.ragertf.tinkoffnews.data.CacheException
 import com.ragertf.tinkoffnews.data.db.TinkoffDatabase
 import com.ragertf.tinkoffnews.data.db.TitleCache
 import com.ragertf.tinkoffnews.data.dto.Title
@@ -14,25 +14,12 @@ class TitleCacheImpl(private val tinkoffDatabase: TinkoffDatabase) : TitleCache 
         return tinkoffDatabase.getRealmRunnable {
             val result = it.copyFromRealm(it.where(Title::class.java).sort("publicationDate.milliseconds", Sort.DESCENDING).findAll())
             if (result.isEmpty()) {
-                throw EmptyCacheException("TitleList cache is empty")
+                throw CacheException("TitleList cache is empty")
             } else {
                 result
             }
         }.flatMapObservable {
             Observable.fromIterable(it)
-        }
-    }
-
-    override fun getCount(): Single<Long> {
-        return tinkoffDatabase.getRealmRunnable {
-            it.where(Title::class.java).count()
-        }
-    }
-
-
-    override fun cache(title: Title): Boolean {
-        return tinkoffDatabase.realmTransaction {
-            it.copyToRealmOrUpdate(title) != null
         }
     }
 

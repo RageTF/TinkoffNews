@@ -1,7 +1,6 @@
 package com.ragertf.tinkoffnews.presentation.screens
 
 import android.support.v4.app.Fragment
-import com.ragertf.tinkoffnews.presentation.model.TitleModel
 import com.ragertf.tinkoffnews.presentation.view.fragments.NewsFragment
 import ru.terrakok.cicerone.android.support.SupportAppScreen
 

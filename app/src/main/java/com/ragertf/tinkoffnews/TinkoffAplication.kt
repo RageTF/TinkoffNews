@@ -1,7 +1,6 @@
 package com.ragertf.tinkoffnews
 
 import android.app.Application
-import android.content.Context
 import com.ragertf.tinkoffnews.di.components.ActivityComponent
 import com.ragertf.tinkoffnews.di.components.AppComponent
 import com.ragertf.tinkoffnews.di.components.DaggerActivityComponent

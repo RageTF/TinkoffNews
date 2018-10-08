@@ -3,15 +3,12 @@ package com.ragertf.tinkoffnews.presentation.view.fragments
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.arellomobile.mvp.MvpAppCompatFragment
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.ragertf.tinkoffnews.R
-import com.ragertf.tinkoffnews.TinkoffAplication
 import com.ragertf.tinkoffnews.presentation.adapter.TitleListAdapter
 import com.ragertf.tinkoffnews.presentation.model.TitleModel
 import com.ragertf.tinkoffnews.presentation.presenter.TitleListPresenter
@@ -31,8 +28,8 @@ class TitleListFragment : MvpAppCompatFragment(), TitleListView {
     private val titleListAdapter = TitleListAdapter()
     private val groupItemDecoration by lazy {
         GroupItemDecoration(
-                resources.getDimensionPixelOffset(R.dimen.title_group_decoration_height),
-                resources.getDimensionPixelOffset(R.dimen.title_group_text_size).toFloat()
+                resources.getDimensionPixelOffset(R.dimen.titleGroupDecorationHeight),
+                resources.getDimensionPixelOffset(R.dimen.titleGroupTextSize).toFloat()
         )
     }
 
@@ -48,7 +45,7 @@ class TitleListFragment : MvpAppCompatFragment(), TitleListView {
 
         title_list.adapter = titleListAdapter
         title_list.layoutManager = LinearLayoutManager(context)
-        title_list.addItemDecoration(MarginItemDecoration(resources.getDimensionPixelOffset(R.dimen.item_space)))
+        title_list.addItemDecoration(MarginItemDecoration(resources.getDimensionPixelOffset(R.dimen.itemSpace)))
         title_list.addItemDecoration(groupItemDecoration)
 
         title_list_refresh.setOnRefreshListener {
@@ -69,7 +66,7 @@ class TitleListFragment : MvpAppCompatFragment(), TitleListView {
     override fun showErrorRepeatSnackBar(stringRes: Int) {
         view?.let {
             Snackbar.make(it, stringRes, Snackbar.LENGTH_LONG)
-        }?.setAction(R.string.snackbar_repeat) {
+        }?.setAction(R.string.repeat) {
             titleListPresenter.onRefreshTitleList()
         }?.show()
     }

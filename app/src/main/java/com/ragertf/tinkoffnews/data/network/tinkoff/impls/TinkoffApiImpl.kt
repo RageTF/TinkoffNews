@@ -1,17 +1,14 @@
 package com.ragertf.tinkoffnews.data.network.tinkoff.impls
 
-import com.ragertf.tinkoffnews.data.dto.News
-import com.ragertf.tinkoffnews.data.dto.Title
 import com.ragertf.tinkoffnews.data.InternetConnectionException
-import com.ragertf.tinkoffnews.data.ItemNotFoundException
 import com.ragertf.tinkoffnews.data.NetworkException
 import com.ragertf.tinkoffnews.data.ServerRespondingException
+import com.ragertf.tinkoffnews.data.dto.News
+import com.ragertf.tinkoffnews.data.dto.Title
 import com.ragertf.tinkoffnews.data.network.tinkoff.Response
 import com.ragertf.tinkoffnews.data.network.tinkoff.TinkoffApi
 import com.ragertf.tinkoffnews.data.network.tinkoff.TinkoffApi.Companion.OK
 import com.ragertf.tinkoffnews.data.network.tinkoff.TinkoffService
-import io.reactivex.Flowable
-import io.reactivex.Observable
 import io.reactivex.Single
 import java.io.IOException
 
@@ -27,7 +24,7 @@ class TinkoffApiImpl(private val requests: TinkoffService) : TinkoffApi {
         }.map {
             if (it.resultCode == OK) {
                 it.payload ?: defaultValueForPayload
-                ?: throw ItemNotFoundException("Payload is null")
+                ?: throw ServerRespondingException("Payload is null")
             } else {
                 throw ServerRespondingException("Result code != OK")
             }

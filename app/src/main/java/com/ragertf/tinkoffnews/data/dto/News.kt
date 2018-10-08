@@ -26,17 +26,18 @@ open class News(
         @field:Expose
         var typeId: String? = null
 ) : RealmObject() {
+
     @field:PrimaryKey
-    var id: Int = title?.id ?: 0
+    var id: Int = 0
 
     override fun equals(other: Any?): Boolean {
         return if (hashCode() == other?.hashCode() && other is News)
-            id == other.id
+            title?.id ?: 0 == other.title?.id ?: 0
         else
             false
     }
 
     override fun hashCode(): Int {
-        return id
+        return title?.id ?: 0
     }
 }

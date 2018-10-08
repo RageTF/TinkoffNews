@@ -4,7 +4,7 @@ import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.ragertf.tinkoffnews.R
 import com.ragertf.tinkoffnews.TinkoffAplication
-import com.ragertf.tinkoffnews.data.EmptyCacheException
+import com.ragertf.tinkoffnews.data.CacheException
 import com.ragertf.tinkoffnews.data.InternetConnectionException
 import com.ragertf.tinkoffnews.data.ServerRespondingException
 import com.ragertf.tinkoffnews.data.dao.TitleDao
@@ -52,9 +52,9 @@ class TitleListPresenter : MvpPresenter<TitleListView>() {
             e.printStackTrace()
             if (isEmpty) viewState.showEmpty()
             viewState.showErrorRepeatSnackBar(when (e) {
-                is ServerRespondingException -> R.string.server_responding_error
-                is InternetConnectionException -> R.string.internet_connection_error
-                else -> R.string.unkonow_error
+                is ServerRespondingException -> R.string.serverRespondingError
+                is InternetConnectionException -> R.string.internetConnectionError
+                else -> R.string.unknowError
             })
         }
     }
@@ -71,7 +71,7 @@ class TitleListPresenter : MvpPresenter<TitleListView>() {
             titleListDao.getTitleListSortedByDate()
         }
     }.onErrorResumeNext(Function {
-        if (it is EmptyCacheException) {
+        if (it is CacheException) {
             titleListDao.getTitleListSortedByDate()
         } else {
             Observable.error(it)

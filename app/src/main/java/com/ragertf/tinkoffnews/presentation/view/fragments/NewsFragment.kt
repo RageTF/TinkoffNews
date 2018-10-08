@@ -1,14 +1,15 @@
 package com.ragertf.tinkoffnews.presentation.view.fragments
 
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v4.text.HtmlCompat
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.arellomobile.mvp.MvpAppCompatFragment
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
+import com.arellomobile.mvp.presenter.ProvidePresenterTag
 import com.ragertf.tinkoffnews.R
 import com.ragertf.tinkoffnews.presentation.model.NewsModel
 import com.ragertf.tinkoffnews.presentation.presenter.NewsPresenter
@@ -17,7 +18,7 @@ import com.ragertf.tinkoffnews.presentation.view.NewsView
 import com.ragertf.tinkoffnews.utils.toDateTimeFormat
 import kotlinx.android.synthetic.main.fragment_news.*
 import kotlinx.android.synthetic.main.layout_repeat.*
-import java.lang.IllegalArgumentException
+import kotlinx.android.synthetic.main.layout_repeat.view.*
 
 class NewsFragment : MvpAppCompatFragment(), NewsView, BackPressedListener {
 
@@ -35,6 +36,10 @@ class NewsFragment : MvpAppCompatFragment(), NewsView, BackPressedListener {
     @InjectPresenter
     lateinit var newsPresenter: NewsPresenter
 
+    @ProvidePresenterTag(presenterClass = NewsPresenter::class)
+    fun providePresenterTag() = "com.ragertf.tinkoffnews.presentation.view.fragments.NewsFragment$${arguments?.getInt(KEY_NEWS_ID)
+            ?: -1}"
+
     @ProvidePresenter
     fun provideNewsPresenter() = NewsPresenter(arguments?.getInt(KEY_NEWS_ID)
             ?: throw IllegalArgumentException("NewsId is required"))
@@ -48,10 +53,21 @@ class NewsFragment : MvpAppCompatFragment(), NewsView, BackPressedListener {
         return true
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        repeat_stub.setOnInflateListener { _, inflated ->
+            inflated.repeat.setOnClickListener {
+                newsPresenter.onRepeat()
+            }
+        }
+    }
+
     override fun showNews(newsModel: NewsModel) {
         date.text = newsModel.date.toDateTimeFormat()
-        title.text = HtmlCompat.fromHtml(newsModel.title,HtmlCompat.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL)
-        content.text = HtmlCompat.fromHtml(newsModel.content,HtmlCompat.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL)
+        title.text = HtmlCompat.fromHtml(newsModel.title, HtmlCompat.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL)
+
+        content.text = HtmlCompat.fromHtml(newsModel.content, HtmlCompat.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL)
+        content.movementMethod = LinkMovementMethod.getInstance()
     }
 
     override fun showLoad() {
@@ -72,6 +88,6 @@ class NewsFragment : MvpAppCompatFragment(), NewsView, BackPressedListener {
         getRepeatView()?.visibility = View.GONE
     }
 
-    private fun getRepeatView(): View? = view?.findViewById<View>(R.id.repeat_layout)
+    private fun getRepeatView(): View? = view?.findViewById(R.id.repeat_layout)
 
 }

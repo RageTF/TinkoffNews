@@ -26,14 +26,10 @@ class TinkoffDatabaseImpls : TinkoffDatabase {
 
     override fun <T> getRealmRunnable(r: (Realm) -> T?): Single<T> {
         return Single.fromCallable {
-            getRealmInstance()
-        }.flatMap {
-            val result = r(it)
-            if (result != null) {
-                Single.just(result)
-            } else {
-                Single.error(CacheException("Returned null"))
-            }.doFinally { it.close() }
+            val realm = getRealmInstance()
+            realm.use {
+                r(it) ?: throw CacheException("Returned null")
+            }
         }.subscribeOn(realmScheduler)
     }
 

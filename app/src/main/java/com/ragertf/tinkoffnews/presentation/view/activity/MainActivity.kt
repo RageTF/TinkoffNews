@@ -1,6 +1,7 @@
 package com.ragertf.tinkoffnews.presentation.view.activity
 
 import android.os.Bundle
+import android.support.v4.app.FragmentManager
 import com.arellomobile.mvp.MvpAppCompatActivity
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.ragertf.tinkoffnews.R
@@ -14,7 +15,7 @@ import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
 import javax.inject.Inject
 
-class MainActivity : MvpAppCompatActivity(), MainView {
+class MainActivity : MvpAppCompatActivity(), MainView, FragmentManager.OnBackStackChangedListener {
 
     @InjectPresenter
     lateinit var mainPresenter: MainPresenter
@@ -28,8 +29,30 @@ class MainActivity : MvpAppCompatActivity(), MainView {
                 .inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        mainPresenter.onFirstViewAttach(savedInstanceState!=null)
+
         setSupportActionBar(toolbar)
+        supportFragmentManager.addOnBackStackChangedListener(this)
+        mainPresenter.onBackStackChange(supportFragmentManager.backStackEntryCount)
+    }
+
+    override fun showHomeUp() {
         supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        toolbar.setNavigationOnClickListener {
+            mainPresenter.onHomeUp()
+        }
+    }
+
+    override fun hideHomeUp() {
+        supportActionBar?.setDisplayShowHomeEnabled(false)
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        toolbar.setNavigationOnClickListener(null)
+    }
+
+    override fun onBackStackChanged() {
+        mainPresenter.onBackStackChange(supportFragmentManager.backStackEntryCount)
     }
 
     override fun onResumeFragments() {
@@ -40,6 +63,11 @@ class MainActivity : MvpAppCompatActivity(), MainView {
     override fun onPause() {
         navigatorHolder.setNavigator(null)
         super.onPause()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        supportFragmentManager.removeOnBackStackChangedListener(this)
     }
 
     override fun onBackPressed() {

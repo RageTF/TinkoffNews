@@ -11,5 +11,6 @@ interface NewsDao {
      *                                  если они там есть, в противном случае данные
      *                                  должны быть запрошены у сервера
      */
-    fun getNewsByIdSingle(newsId: Int, isTakeFromCacheIfExists: Boolean): Single<News>
+    fun getNewsByIdSingle(newsId: Int): Single<News>
+    fun getNewsByIdFromCacheSingle(newsId: Int): Single<News>
 }

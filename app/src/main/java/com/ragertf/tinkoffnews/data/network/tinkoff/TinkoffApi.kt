@@ -2,8 +2,6 @@ package com.ragertf.tinkoffnews.data.network.tinkoff
 
 import com.ragertf.tinkoffnews.data.dto.News
 import com.ragertf.tinkoffnews.data.dto.Title
-import io.reactivex.Flowable
-import io.reactivex.Observable
 import io.reactivex.Single
 
 /**

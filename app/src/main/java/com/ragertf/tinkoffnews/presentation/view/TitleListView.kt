@@ -2,22 +2,24 @@ package com.ragertf.tinkoffnews.presentation.view
 
 import android.support.annotation.StringRes
 import com.arellomobile.mvp.MvpView
-import com.arellomobile.mvp.viewstate.strategy.*
+import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy
+import com.arellomobile.mvp.viewstate.strategy.OneExecutionStateStrategy
+import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
 import com.ragertf.tinkoffnews.presentation.model.TitleModel
 import java.util.*
 
 interface TitleListView : MvpView {
 
-    @StateStrategyType(AddToEndStrategy::class)
+    @StateStrategyType(AddToEndSingleStrategy::class)
     fun showProgress()
 
-    @StateStrategyType(AddToEndStrategy::class)
+    @StateStrategyType(AddToEndSingleStrategy::class)
     fun hideProgress()
 
-    @StateStrategyType(AddToEndStrategy::class)
+    @StateStrategyType(AddToEndSingleStrategy::class)
     fun showEmpty()
 
-    @StateStrategyType(AddToEndStrategy::class)
+    @StateStrategyType(AddToEndSingleStrategy::class)
     fun hideEmpty()
 
     /**

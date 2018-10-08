@@ -4,7 +4,6 @@ import com.ragertf.tinkoffnews.data.dto.Title
 import com.ragertf.tinkoffnews.presentation.model.TitleModel
 import com.ragertf.tinkoffnews.utils.toCalendar
 import io.reactivex.functions.Function
-import java.util.*
 
 class TitleModelMapper: Function<Title,TitleModel>{
     override fun apply(t: Title): TitleModel {

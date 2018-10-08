@@ -2,8 +2,8 @@ package com.ragertf.tinkoffnews.di.modules.app
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.ragertf.tinkoffnews.data.network.tinkoff.TinkoffApi
-import com.ragertf.tinkoffnews.data.network.tinkoff.impls.TinkoffApiImpl
 import com.ragertf.tinkoffnews.data.network.tinkoff.TinkoffService
+import com.ragertf.tinkoffnews.data.network.tinkoff.impls.TinkoffApiImpl
 import dagger.Module
 import dagger.Provides
 import io.reactivex.schedulers.Schedulers
@@ -23,6 +23,8 @@ open class NetworkModule {
             .connectTimeout(1, TimeUnit.MINUTES)
             .readTimeout(1, TimeUnit.MINUTES)
             .writeTimeout(1, TimeUnit.MINUTES)
+            .retryOnConnectionFailure(true)
+            .connectionPool(ConnectionPool(2,1,TimeUnit.MINUTES))
             .build()
 
     @Provides

@@ -4,7 +4,6 @@ import android.support.v4.text.HtmlCompat
 import android.support.v4.text.HtmlCompat.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

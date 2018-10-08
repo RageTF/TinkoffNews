@@ -19,7 +19,18 @@ class NewsCacheImpl(private val tinkoffDatabase: TinkoffDatabase) : NewsCache {
 
     override fun cache(news: News): Boolean {
         return tinkoffDatabase.realmTransaction {
-            it.copyToRealmOrUpdate(news) != null
+            val title = news.title
+            if (title != null) {
+                val oldNews = it.where(News::class.java).equalTo("id", title.id).findFirst()
+                if (oldNews == null) {
+                    news.id = title.id
+                    it.copyToRealmOrUpdate(news) != null
+                } else {
+                    true
+                }
+            } else {
+                false
+            }
         }
     }
 

@@ -4,7 +4,7 @@ import android.app.Application
 import dagger.Module
 
 @Module
-class HelperModule(application: Application){
+class HelperModule(application: Application) {
 
 
 }

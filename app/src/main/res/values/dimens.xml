@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="item_space">8dp</dimen>
-
-    <dimen name="title_group_decoration_height">25dp</dimen>
-    <dimen name="title_group_text_size">12sp</dimen>
-
+    <dimen name="itemSpace">8dp</dimen>
+    <dimen name="titleGroupDecorationHeight">25dp</dimen>
+    <dimen name="titleGroupTextSize">12sp</dimen>
 </resources>

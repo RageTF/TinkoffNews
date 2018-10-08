@@ -8,7 +8,6 @@ import com.ragertf.tinkoffnews.data.db.impls.TinkoffDatabaseImpls
 import com.ragertf.tinkoffnews.data.db.impls.TitleCacheImpl
 import dagger.Module
 import dagger.Provides
-import io.realm.RealmConfiguration
 import javax.inject.Singleton
 
 @Module

@@ -32,17 +32,17 @@ fun Calendar.toDateTimeFormat(targetTimeZone: TimeZone = TimeZone.getDefault()):
 
 @StringRes
 fun getMonth(month: Int): Int = when (month) {
-    0 -> R.string.m_0
-    1 -> R.string.m_1
-    2 -> R.string.m_2
-    3 -> R.string.m_3
-    4 -> R.string.m_4
-    5 -> R.string.m_5
-    6 -> R.string.m_6
-    7 -> R.string.m_7
-    8 -> R.string.m_8
-    9 -> R.string.m_9
-    10 -> R.string.m_10
-    11 -> R.string.m_11
+    0 -> R.string.m0
+    1 -> R.string.m1
+    2 -> R.string.m2
+    3 -> R.string.m3
+    4 -> R.string.m4
+    5 -> R.string.m5
+    6 -> R.string.m6
+    7 -> R.string.m7
+    8 -> R.string.m8
+    9 -> R.string.m9
+    10 -> R.string.m10
+    11 -> R.string.m11
     else -> -1
 }
