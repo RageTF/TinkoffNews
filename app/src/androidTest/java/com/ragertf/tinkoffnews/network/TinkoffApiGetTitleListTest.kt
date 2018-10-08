@@ -40,10 +40,11 @@ class TinkoffApiGetTitleListTest {
                 .build()
                 .inject(this)
     }
+
     @Test
     fun mustThrowServerRespondingExceptionIfGetTitleListResponseIsNotOkTest() {
         Mockito.`when`(tinkoffService.getTitleList()).thenReturn(Single.just(TestDataFactory.getNotOkResponse()))
-        val testObserver = TestObserver<Title>()
+        val testObserver = TestObserver<List<Title>>()
         tinkoffApi.getTitleList().subscribe(testObserver)
         testObserver.await()
         testObserver.assertError(ServerRespondingException::class.java)
@@ -52,7 +53,7 @@ class TinkoffApiGetTitleListTest {
     @Test
     fun mustThrowExceptionWhenCanNotLoadTitleListTest() {
         Mockito.`when`(tinkoffService.getTitleList()).thenReturn(Single.error(IOException()))
-        val testObserver = TestObserver<Title>()
+        val testObserver = TestObserver<List<Title>>()
 
         tinkoffApi.getTitleList().subscribe(testObserver)
         testObserver.await()
@@ -60,7 +61,7 @@ class TinkoffApiGetTitleListTest {
 
         Mockito.`when`(tinkoffService.getTitleList()).thenReturn(Single.error(Exception()))
 
-        val testObserver1 = TestObserver<Title>()
+        val testObserver1 = TestObserver<List<Title>>()
         tinkoffApi.getTitleList().subscribe(testObserver1)
         testObserver.await()
         testObserver.assertError(NetworkException::class.java)
@@ -71,19 +72,21 @@ class TinkoffApiGetTitleListTest {
     fun mustReturnTitleListIfResponseIsOkTest() {
         val testData = TestDataFactory.getTestTitleList()
         Mockito.`when`(tinkoffService.getTitleList()).thenReturn(Single.just(TestDataFactory.getOkResponse(testData)))
-        val testObserver = TestObserver<Title>()
+        val testObserver = TestObserver<List<Title>>()
         tinkoffApi.getTitleList().subscribe(testObserver)
         testObserver.await()
-        testObserver.assertValueSequence(testData)
+        testObserver.assertValue(testData)
     }
 
     @Test
     fun mustReturnEmptyTitleListIfPayloadIsNullAndResponseIsOkTest() {
         Mockito.`when`(tinkoffService.getTitleList()).thenReturn(Single.just(TestDataFactory.getOkResponseWithNullPayload()))
-        val testObserver = TestObserver<Title>()
+        val testObserver = TestObserver<List<Title>>()
         tinkoffApi.getTitleList().subscribe(testObserver)
         testObserver.await()
-        testObserver.assertNoValues()
+        testObserver.assertValue{
+            it.isEmpty()
+        }
     }
 
 }

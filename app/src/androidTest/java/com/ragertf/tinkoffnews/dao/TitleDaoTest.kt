@@ -43,43 +43,24 @@ class TitleDaoTest {
 
 
     @Test
-    fun mustSaveToCacheTitleListWhenSuccessResponseTest() {
+    fun mustReturnTitleListFromServerAndCacheThemTest() {
         val testDataList = TestDataFactory.getTestTitleList()
-
-        Mockito.`when`(titleCache.cache(TestDataFactory.getTestTitle(0))).thenReturn(true)
-        Mockito.`when`(tinkoffApi.getTitleList()).thenReturn(Observable.fromIterable(testDataList))
-
+        Mockito.`when`(tinkoffApi.getTitleList()).thenReturn(Single.just(testDataList))
         val testObserver = TestObserver<Title>()
-        titleDao.getTitleListSortedByDate(false).subscribe(testObserver)
+        titleDao.getTitleListSortedByDate().subscribe(testObserver)
         testObserver.await()
-
+        testObserver.assertValueSet(testDataList)
         Mockito.verify(titleCache).cache(testDataList)
     }
 
     @Test
-    fun mustReturnTitleListFromCacheIfFailResponse() {
+    fun mustReturnTitleListFromCacheTest() {
         val testDataList = TestDataFactory.getTestTitleList()
-        Mockito.`when`(titleCache.getCount()).thenReturn(Single.just(testDataList.size.toLong()))
         Mockito.`when`(titleCache.getTitleListSortByDate()).thenReturn(Observable.fromIterable(testDataList))
-        Mockito.`when`(tinkoffApi.getTitleList()).thenReturn(Observable.error(ServerRespondingException()))
-
         val testObserver = TestObserver<Title>()
-        titleDao.getTitleListSortedByDate(true).subscribe(testObserver)
+        titleDao.getTitleListSortedByDateFromCache().subscribe(testObserver)
         testObserver.await()
-        testObserver.assertValueSequence(testDataList)
-    }
-
-    @Test
-    fun mustLoadTitleListFromApiIfCachedTitleEmptyTest() {
-        val testDataList = TestDataFactory.getTestTitleList()
-        Mockito.`when`(titleCache.getCount()).thenReturn(Single.just(0))
-        Mockito.`when`(titleCache.getTitleListSortByDate()).thenReturn(Observable.empty<Title>())
-        Mockito.`when`(tinkoffApi.getTitleList()).thenReturn(Observable.fromIterable<Title>(testDataList))
-
-        val testObserver = TestObserver<Title>()
-        titleDao.getTitleListSortedByDate(true).subscribe(testObserver)
-        testObserver.await()
-        testObserver.assertValueSequence(testDataList)
+        testObserver.assertValueSet(testDataList)
     }
 
 }

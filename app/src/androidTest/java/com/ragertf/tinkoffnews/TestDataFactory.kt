@@ -22,7 +22,7 @@ object TestDataFactory {
     }
 
     fun getTestNews(id: Int): News {
-        return News(getTestTitle(id), Date(id.toLong()), Date(id.toLong()), "Test", id, id)
+        return News(getTestTitle(id), Date(id.toLong()), Date(id.toLong()), "Test", id, "usual")
     }
 
     fun getTestNewsList(): List<News> {

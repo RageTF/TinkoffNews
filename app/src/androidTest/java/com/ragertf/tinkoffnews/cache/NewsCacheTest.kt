@@ -30,8 +30,6 @@ class NewsCacheTest {
     fun init() {
         DaggerAppTestComponent.builder()
                 .cacheModule(CacheModule())
-                .networkModule(NetworkModule())
-                .daoModule(DaoModule())
                 .build()
                 .inject(this)
         tinkoffDatabase.clearAll()

@@ -3,8 +3,6 @@ package com.ragertf.tinkoffnews.dao
 import com.ragertf.tinkoffnews.TestDataFactory
 import com.ragertf.tinkoffnews.dao.modules.MockTestCacheModule
 import com.ragertf.tinkoffnews.dao.modules.MockTinkoffApiTestNetworkModule
-import com.ragertf.tinkoffnews.data.CacheException
-import com.ragertf.tinkoffnews.data.ServerRespondingException
 import com.ragertf.tinkoffnews.data.dao.NewsDao
 import com.ragertf.tinkoffnews.data.db.NewsCache
 import com.ragertf.tinkoffnews.data.dto.News
@@ -41,51 +39,26 @@ class NewsDaoTest {
     }
 
     @Test
-    fun mustSaveToCacheNewsWhenSuccessResponseTest() {
+    fun mustReturnNewsFromServerAndCacheThemTest() {
         val testData = TestDataFactory.getTestNews(1)
         Mockito.`when`(newsCache.cache(testData)).thenReturn(true)
         Mockito.`when`(tinkoffApi.getNews(testData.id)).thenReturn(Single.just(testData))
 
         val testObserver = TestObserver<News>()
-        newsDao.getNewsByIdSingle(testData.id, false).subscribe(testObserver)
+        newsDao.getNewsByIdSingle(testData.id).subscribe(testObserver)
         testObserver.await()
 
         Mockito.verify(newsCache).cache(testData)
     }
 
     @Test
-    fun mustReturnNewsFromCacheIfFailResponse() {
+    fun mustReturnNewsFromCacheTest() {
         val testData = TestDataFactory.getTestNews(1)
         Mockito.`when`(newsCache.getNews(testData.id)).thenReturn(Single.just(testData))
-        Mockito.`when`(tinkoffApi.getNews(testData.id)).thenReturn(Single.error(ServerRespondingException()))
-
         val testObserver = TestObserver<News>()
-        newsDao.getNewsByIdSingle(testData.id, true).subscribe(testObserver)
+        newsDao.getNewsByIdFromCacheSingle(testData.id).subscribe(testObserver)
         testObserver.await()
         testObserver.assertValue(testData)
     }
-
-    @Test
-    fun mustLoadNewsFromApiIfCachedExceptionTest() {
-        val testData = TestDataFactory.getTestNews(1)
-        Mockito.`when`(newsCache.getNews(testData.id)).thenReturn(Single.error(CacheException()))
-        Mockito.`when`(tinkoffApi.getNews(testData.id)).thenReturn(Single.just(testData))
-
-        val testObserver = TestObserver<News>()
-        newsDao.getNewsByIdSingle(testData.id, true).subscribe(testObserver)
-        testObserver.await()
-        testObserver.assertValue(testData)
-    }
-
-    @Test
-    fun mustThrowExceptionIfNotCachedExceptionTest() {
-        val testData = TestDataFactory.getTestNews(1)
-        Mockito.`when`(newsCache.getNews(testData.id)).thenReturn(Single.error(Exception()))
-        val testObserver = TestObserver<News>()
-        newsDao.getNewsByIdSingle(testData.id, true).subscribe(testObserver)
-        testObserver.await()
-        testObserver.assertError(Exception::class.java)
-    }
-
 
 }

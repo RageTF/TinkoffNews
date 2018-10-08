@@ -3,6 +3,7 @@ package com.ragertf.tinkoffnews.cache
 
 import android.support.test.runner.AndroidJUnit4
 import com.ragertf.tinkoffnews.TestDataFactory
+import com.ragertf.tinkoffnews.data.CacheException
 import com.ragertf.tinkoffnews.data.db.TinkoffDatabase
 import com.ragertf.tinkoffnews.data.db.TitleCache
 import com.ragertf.tinkoffnews.data.dto.Title
@@ -15,10 +16,11 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.junit.MockitoJUnitRunner
 import javax.inject.Inject
 
 
-@RunWith(AndroidJUnit4::class)
+@RunWith(MockitoJUnitRunner::class)
 class TitleCacheTest {
 
     @Inject
@@ -41,35 +43,22 @@ class TitleCacheTest {
     @Test
     fun mustClearTitleCacheTest() {
         val titles = TestDataFactory.getTestTitleList()
-        for (i in titles) {
-            titleCache.cache(i)
-        }
+        titleCache.cache(titles)
         titleCache.clear()
         val testObserver = TestObserver<Title>()
         titleCache.getTitleListSortByDate().subscribe(testObserver)
         testObserver.await()
-        testObserver.assertNoValues()
+        testObserver.assertError(CacheException::class.java)
     }
 
     @Test
     fun mustAddTitleToCacheTest() {
-        val title = TestDataFactory.getTestTitle(1)
+        val title = TestDataFactory.getTestTitleList()
         val testObserver = TestObserver<Title>()
         titleCache.cache(title)
         titleCache.getTitleListSortByDate().subscribe(testObserver)
         testObserver.await()
-        testObserver.assertValue(title)
-    }
-
-
-    @Test
-    fun mustReturnCountOfTitle() {
-        val titles = TestDataFactory.getTestTitleList()
-        titleCache.cache(titles)
-        val testObserver = TestObserver<Long>()
-        titleCache.getCount().subscribe(testObserver)
-        testObserver.await()
-        testObserver.assertValue(titles.size.toLong())
+        testObserver.assertValueSet(title)
     }
 
 
@@ -89,12 +78,11 @@ class TitleCacheTest {
     }
 
     @Test
-    fun mustGetEmptyIfNotCachedTest() {
+    fun mustThrowCachedExceptionIfNotCachedTest() {
         val testObserver = TestObserver<Title>()
         titleCache.getTitleListSortByDate().subscribe(testObserver)
         testObserver.await()
-        testObserver.assertNoValues()
-        testObserver.assertComplete()
+        testObserver.assertError(CacheException::class.java)
     }
 
     @After

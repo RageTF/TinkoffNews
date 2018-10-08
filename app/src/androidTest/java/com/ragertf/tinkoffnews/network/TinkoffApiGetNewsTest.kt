@@ -3,7 +3,6 @@ package com.ragertf.tinkoffnews.network
 
 import com.ragertf.tinkoffnews.TestDataFactory
 import com.ragertf.tinkoffnews.data.InternetConnectionException
-import com.ragertf.tinkoffnews.data.ItemNotFoundException
 import com.ragertf.tinkoffnews.data.NetworkException
 import com.ragertf.tinkoffnews.data.ServerRespondingException
 import com.ragertf.tinkoffnews.data.dto.News
@@ -69,13 +68,13 @@ class TinkoffApiGetNewsTest {
     }
 
     @Test
-    fun mustThrowItemNotFoundExceptionOnGetNewsIfPayloadIsNullAndResponseIsOkTest() {
+    fun mustThrowServerRespondingExceptionOnGetNewsIfPayloadIsNullAndResponseIsOkTest() {
         val id = 1
         Mockito.`when`(tinkoffService.getNews(id)).thenReturn(Single.just(TestDataFactory.getOkResponseWithNullPayload()))
         val testObserver = TestObserver<News>()
         tinkoffApi.getNews(id).subscribe(testObserver)
         testObserver.await()
-        testObserver.assertError(ItemNotFoundException::class.java)
+        testObserver.assertError(ServerRespondingException::class.java)
     }
 
 
