@@ -56,9 +56,6 @@ class NewsPresenter(private val newsId: Int) : MvpPresenter<NewsView>() {
 
     private fun getUpdateNews(isCache: Boolean) =
             Single.just(isCache).flatMap {
-                if (it)
-                    newsDao.getNewsByIdFromCacheSingle(newsId)
-                else
                     newsDao.getNewsByIdSingle(newsId)
             }.onErrorResumeNext {
                 if (it is CacheException)

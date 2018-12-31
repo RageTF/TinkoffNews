@@ -17,7 +17,7 @@ interface TinkoffApi {
         const val FAIL = "FAIL"
     }
 
-    fun getTitleList(): Single<List<Title>>
+    fun getTitleList(token: String): Single<List<Title>>
 
     /**
      *  @param newsId Идентификатор новости

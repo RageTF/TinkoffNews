@@ -9,7 +9,7 @@ import retrofit2.http.Query
 interface TinkoffService {
 
     @GET("news")
-    fun getTitleList(): Single<Response<List<Title>>>
+    fun getTitleList(@Query("key") key: String): Single<Response<List<Title>>>
 
     @GET("news_content")
     fun getNews(@Query("id") newsId: Int): Single<Response<News>>

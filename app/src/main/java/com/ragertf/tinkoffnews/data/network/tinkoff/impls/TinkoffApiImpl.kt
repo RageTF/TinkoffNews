@@ -31,7 +31,7 @@ class TinkoffApiImpl(private val requests: TinkoffService) : TinkoffApi {
         }
     }
 
-    override fun getTitleList(): Single<List<Title>> = requests.getTitleList().payload(emptyList())
+    override fun getTitleList(token: String): Single<List<Title>> = requests.getTitleList(token).payload(emptyList())
 
     override fun getNews(newsId: Int): Single<News> = requests.getNews(newsId).payload()
 

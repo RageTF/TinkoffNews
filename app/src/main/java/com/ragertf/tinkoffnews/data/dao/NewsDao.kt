@@ -12,5 +12,4 @@ interface NewsDao {
      *                                  должны быть запрошены у сервера
      */
     fun getNewsByIdSingle(newsId: Int): Single<News>
-    fun getNewsByIdFromCacheSingle(newsId: Int): Single<News>
 }

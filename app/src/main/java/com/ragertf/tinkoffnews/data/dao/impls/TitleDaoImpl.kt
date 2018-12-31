@@ -6,11 +6,12 @@ import com.ragertf.tinkoffnews.data.db.TitleCache
 import com.ragertf.tinkoffnews.data.dto.Title
 import com.ragertf.tinkoffnews.data.network.tinkoff.TinkoffApi
 import io.reactivex.Observable
+import java.util.*
 
-class TitleDaoImpl(private val tinkoffApi: TinkoffApi, private val titleCache: TitleCache) : TitleDao {
+class TitleDaoImpl(private val tinkoffApi: TinkoffApi) : TitleDao {
 
     companion object {
-        private const val TAG="TitleDaoImpl"
+        private const val TAG = "TitleDaoImpl"
     }
 
     private val sortedComparator = Comparator { o1: Title, o2: Title ->
@@ -25,21 +26,13 @@ class TitleDaoImpl(private val tinkoffApi: TinkoffApi, private val titleCache: T
     }
 
     override fun getTitleListSortedByDate(): Observable<Title> {
+        val random = Random()
         return tinkoffApi
-                .getTitleList()
-                .doOnSuccess {
-                    titleCache.cache(it)
-                }.flatMapObservable {
+                .getTitleList("abcd").flatMapObservable {
                     Observable.fromIterable(it)
                 }.sorted(sortedComparator).doOnSubscribe {
-                    Log.v(TAG,"getTitleListSortedByDateSubscribed")
+                    Log.v(TAG, "getTitleListSortedByDateSubscribed")
                 }
-    }
-
-    override fun getTitleListSortedByDateFromCache(): Observable<Title> {
-        return titleCache.getTitleListSortByDate().doOnSubscribe {
-            Log.v(TAG,"getTitleListSortedByDateFromCacheSubscribed")
-        }
     }
 
 }

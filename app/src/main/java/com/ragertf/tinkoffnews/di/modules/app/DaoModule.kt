@@ -16,10 +16,10 @@ class DaoModule{
 
     @Singleton
     @Provides
-    fun provideNewsDao(tinkoffApi: TinkoffApi,newsCache: NewsCache): NewsDao = NewsDaoImpl(tinkoffApi, newsCache)
+    fun provideNewsDao(tinkoffApi: TinkoffApi): NewsDao = NewsDaoImpl(tinkoffApi)
 
     @Singleton
     @Provides
-    fun provideTitleDao(tinkoffApi: TinkoffApi,titleCache: TitleCache): TitleDao = TitleDaoImpl(tinkoffApi, titleCache)
+    fun provideTitleDao(tinkoffApi: TinkoffApi): TitleDao = TitleDaoImpl(tinkoffApi)
 
 }

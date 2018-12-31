@@ -65,11 +65,7 @@ class TitleListPresenter : MvpPresenter<TitleListView>() {
     }
 
     private fun getDataSource(isCache: Boolean): Single<List<TitleModel>> = Observable.just(isCache).flatMap {
-        if (it) {
-            titleListDao.getTitleListSortedByDateFromCache()
-        } else {
-            titleListDao.getTitleListSortedByDate()
-        }
+        titleListDao.getTitleListSortedByDate()
     }.onErrorResumeNext(Function {
         if (it is CacheException) {
             titleListDao.getTitleListSortedByDate()

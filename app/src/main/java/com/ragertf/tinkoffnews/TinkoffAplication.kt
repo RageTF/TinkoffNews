@@ -30,7 +30,7 @@ class TinkoffAplication : Application() {
     private val appComponent: AppComponent = DaggerAppComponent.builder()
             .ciceroneModule(CiceroneModule())
             .cacheModule(CacheModule())
-            .networkModule(NetworkModule())
+            .networkModule(NetworkModule(this))
             .daoModule(DaoModule())
             .build()
 
